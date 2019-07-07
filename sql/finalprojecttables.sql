@@ -6,7 +6,7 @@ CREATE TABLE Item
 (
     ID int auto_increment, 
     ItemCode varchar(10) NOT NULL, 
-    ItemDdescription varchar(50),
+    ItemDescription varchar(50),
     Price decimal(4,2) DEFAULT 0,
     primary key (ID),
     UNIQUE (ItemCode)
@@ -18,9 +18,8 @@ CREATE TABLE Purchase
     ItemID int NOT NULL,
     Quantity int NOT NULL,
     PurchaseDate datetime DEFAULT current_timestamp,
-    Price decimal(4,2) DEFAULT 0,
     primary key (ID),
-    FOREIGN KEY (ItemID) REFERENCES Item (ID)
+    FOREIGN KEY (ItemID) REFERENCES Item(ID)
 );
 
 CREATE TABLE Shipment
@@ -33,3 +32,12 @@ CREATE TABLE Shipment
     FOREIGN KEY (ItemID) REFERENCES Item (ID),
     UNIQUE (ShipmentDate)
 );
+
+DELIMITER //
+CREATE PROCEDURE create_item(IN _ItemCode varchar(10), IN _ItemDescription varchar(50), IN _price double)
+BEGIN
+    INSERT INTO Item (ItemCode, ItemDescription, price) VALUES (_ItemCode, _ItemDescription, _price);
+END //
+DELIMITER ;
+
+INSERT INTO Purchase (ItemID, Quantity) VALUES ((SELECT ID FROM Item WHERE ItemCode='test01'), 5);
