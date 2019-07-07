@@ -39,5 +39,3 @@ BEGIN
     INSERT INTO Item (ItemCode, ItemDescription, price) VALUES (_ItemCode, _ItemDescription, _price);
 END //
 DELIMITER ;
-
-INSERT INTO Purchase (ItemID, Quantity) VALUES ((SELECT ID FROM Item WHERE ItemCode='test01'), 5);
